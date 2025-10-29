@@ -21,6 +21,7 @@ def download_nltk_resources():
         nltk.data.find('corpora/wordnet')
     except LookupError:
         nltk.download('punkt')
+        nltk.download('punkt_tab')
         nltk.download('stopwords')
         nltk.download('wordnet')
 
