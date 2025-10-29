@@ -12,11 +12,11 @@ from nltk.stem import WordNetLemmatizer
 import os # Added to check if files exist
 
 # --- NLTK Resource Download ---
-# Use a function to avoid cluttering the global space
 def download_nltk_resources():
     """Checks and downloads required NLTK data."""
     try:
         nltk.data.find('tokenizers/punkt')
+        nltk.data.find('tokenizers/punkt_tab') 
         nltk.data.find('corpora/stopwords')
         nltk.data.find('corpora/wordnet')
     except LookupError:
@@ -38,7 +38,6 @@ def load_assets():
     Loads and caches the trained model and tokenizer.
     This function runs only once when the app starts.
     """
-    # Check if files exist
     if not os.path.exists(MODEL_PATH):
         st.error(f"Model file not found at {MODEL_PATH}")
         return None, None
@@ -124,36 +123,30 @@ def predict_sentiment(raw_text, model, tokenizer):
 st.title("LSTM-Based Sentiment Analyzer")
 st.write("Enter a comment below to analyze its sentiment (Positive, Negative, or Neutral).")
 
-# Use a session state to hold the input
-if 'user_input' not in st.session_state:
-    st.session_state.user_input = ""
 
-user_input = st.text_area("Enter your comment:", st.session_state.user_input, height=150)
+st.text_area("Enter your comment:", height=150, key="text_input_area")
 
 # Analyze button
 if st.button("Analyze Sentiment"):
-    if user_input:
-        # Store the input in session state
-        st.session_state.user_input = user_input
-        
+    comment_to_analyze = st.session_state.text_input_area
+    
+    if comment_to_analyze:        
         # Run the pipeline
         with st.spinner("Analyzing..."):
-            sentiment = predict_sentiment(user_input, model, tokenizer)
+            sentiment = predict_sentiment(comment_to_analyze, model, tokenizer)
         
-        if sentiment == "Positive":
-            st.success(f"**Predicted Sentiment: Positive**")
-        elif sentiment == "Negative":
-            st.error(f"**Predicted Sentiment: Negative**")
-        elif sentiment == "Neutral":
-            st.info(f"**Predicted Sentiment: Neutral**")
+        if sentiment:
+            st.subheader("Predicted Sentiment")
+            st.write(f"**{sentiment}**")
         else:
-            st.warning("Could not analyze sentiment. Model assets might be missing.")
+            st.warning("Could not analyze sentiment. Model assets might be missing or an error occurred.")
     else:
         st.warning("Please enter a comment to analyze.")
 
 # Add a "Clear" button
 if st.button("Clear"):
-    st.session_state.user_input = ""
+    # 4. The clear button now just sets the text_input_area's state to empty
+    st.session_state.text_input_area = ""
     st.rerun()
 
 # --- Sidebar Information ---
