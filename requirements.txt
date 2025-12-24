@@ -1,0 +1,12 @@
+gensim
+requests
+numpy
+pandas
+matplotlib
+seaborn
+vaderSentiment
+imblearn
+nltk
+scikit-learn
+tensorflow
+keras
