@@ -7,7 +7,6 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import nltk
 from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import os # Added to check if files exist
 
@@ -15,7 +14,6 @@ import os # Added to check if files exist
 
 nltk.download('punkt')
 nltk.download('punkt_tab')
-nltk.download('stopwords')
 nltk.download('wordnet')
 
 # --- Define Model and Tokenizer Paths ---
@@ -50,7 +48,6 @@ def load_assets():
 model, tokenizer = load_assets()
 
 # --- Preprocessing Functions & Assets ---
-stop_words = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
 
 def removing(text):
@@ -68,7 +65,6 @@ def preprocess_text(text):
     text = text.lower()
     text = removing(text)
     tokens = word_tokenize(text)
-    tokens = [word for word in tokens if word not in stop_words]
     tokens = [lemmatizer.lemmatize(word) for word in tokens]
     return tokens
 
@@ -143,7 +139,7 @@ if st.button("Clear"):
 # --- Sidebar Information ---
 st.sidebar.title("About the Model")
 st.sidebar.markdown("""
-This model is a **Recurrent Neural Network (RNN)** designed for multi-class sentiment analysis. It was trained on a dataset of Reddit comments.
+This model is a **Recurrent Neural Network (LSTM)** designed for multi-class sentiment analysis. It was trained on a dataset of Reddit comments.
 """)
 
 st.sidebar.subheader("Project Highlights")
