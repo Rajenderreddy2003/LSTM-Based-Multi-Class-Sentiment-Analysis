@@ -154,9 +154,8 @@ st.sidebar.subheader("Model Architecture")
 st.sidebar.markdown(f"""
 A Sequential Keras model:
 1.  **Embedding Layer:** vocab_size=15000, output_dim=128, input_length=60
-2.  **SpatialDropout1D:** rate=0.2
-3.  **LSTM Layer:** units=64, dropout=0.2, recurrent_dropout=0.2
-4.  **Dense Layer (Output):** units=3, activation='softmax'
+2.  **LSTM Layer:** units=64, dropout=0.2, recurrent_dropout=0.2
+3.  **Dense Layer (Output):** units=3, activation='softmax'
 """)
 
 st.sidebar.subheader("Preprocessing Pipeline")
